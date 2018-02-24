@@ -63,7 +63,7 @@
 
         <h1 class="content-heading"> Contact </h1>
 
-        <p class="content-p"> For business/personal inquiries or technical questions only:<br>email@email.com</p>
+        <p class="content-p"> For business/personal inquiries or technical questions only:<br>wpm.business@gmail.com</p>
 
     </main>
 
