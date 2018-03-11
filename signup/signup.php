@@ -3,6 +3,19 @@
     //Check if the 'signup' button has been pressed
     if (!empty($_POST)) {
 
+      require_once('../recaptchalib.php');
+      $privatekey = "6LdPWEgUAAAAAH7zLxIby7JDzuOe5NRrujLS2jbu";
+      $resp = recaptcha_check_answer ($privatekey,
+              $_SERVER["REMOTE_ADDR"],
+              $_POST["recaptcha_challenge_field"],
+              $_POST["recaptcha_response_field"]);
+
+      if (!$resp->is_valid) {
+        // What happens when the CAPTCHA was entered incorrectly
+        die ("The reCAPTCHA wasn't entered correctly. Go back and try it again." .
+         "(reCAPTCHA said: " . $resp->error . ")");
+      } else {
+
         //Include the database connection file
         include_once "../ROOT_DB_CONNECT.php";
 
@@ -70,6 +83,8 @@
             }
 
         }
+
+      }
 
     }else/*If there is an error submitting, return the user and kill script*/{
 
