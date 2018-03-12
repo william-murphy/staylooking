@@ -84,7 +84,7 @@
                           <input type='text' name='title' placeholder='Title...'></input>
                           <input type='file' name='image'></input>
                           <br>
-                          <div class='g-recaptcha' data-sitekey='6LdPWEgUAAAAAFMFbgaCSz5bTt-Z19WRwWiJo-67'></div>
+                          <div class='g-recaptcha' data-sitekey='6Ld6Q0wUAAAAALrIha62i3iP7OYJLcVHIGLXKFc1'></div>
                           <button type='submit' name='submit'>Upload</button>
                       </form>
                   </div>";

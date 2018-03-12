@@ -10,8 +10,8 @@
         if (isset($_POST['submit'])) {
 
           require_once('../recaptchalib.php');
-          $privatekey = "6LdPWEgUAAAAAH7zLxIby7JDzuOe5NRrujLS2jbu";
-          $resp = recaptcha_check_answer ($privatekey,
+          require_once('../sensitivestrings.php');
+          $resp = recaptcha_check_answer ($ssRecaptchaSecretKey,
                   $_SERVER["REMOTE_ADDR"],
                   $_POST["recaptcha_challenge_field"],
                   $_POST["recaptcha_response_field"]);

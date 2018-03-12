@@ -81,7 +81,7 @@
             <input type="text" id="user_name" placeholder="Username..."></input>
             <input type="password" id="user_pwd" placeholder="Password..."></input>
             <br>
-            <div class="g-recaptcha" data-sitekey="6LdPWEgUAAAAAFMFbgaCSz5bTt-Z19WRwWiJo-67"></div>
+            <div class="g-recaptcha" data-sitekey="6Ld6Q0wUAAAAALrIha62i3iP7OYJLcVHIGLXKFc1"></div>
             <button type="submit" id="submit">Sign Up</button>
 
             <script type="text/javascript">
