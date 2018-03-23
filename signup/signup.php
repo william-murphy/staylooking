@@ -5,7 +5,7 @@
 
       require_once('../recaptchalib.php');
       require_once('../sensitivestrings.php');
-      $resp = recaptcha_check_answer ($ssRecaptchaSecretKey,
+      $resp = recaptcha_check_answer ($ssRecaptchaSecretKey_S,
               $_SERVER["REMOTE_ADDR"],
               $_POST["recaptcha_challenge_field"],
               $_POST["recaptcha_response_field"]);
@@ -29,7 +29,8 @@
         //Check for empty fields
         if (empty($user_email) || empty($user_name) || empty($user_pwd)) {
 
-            echo "http://staylooking.com/signup/index.php?status=emptyfield";
+          header("Location: http://staylooking.com/signup/index.php?status=emptyfield");
+          exit();
 
         }else {
 
@@ -42,7 +43,8 @@
             //Check if email is valid
             if (!filter_var($user_email, FILTER_VALIDATE_EMAIL) || $sqlNumOfRows1 > 0 || $sqlNumOfRows2 > 0) {
 
-                echo "http://staylooking.com/signup/index.php?status=invalidemail";
+              header("Location: http://staylooking.com/signup/index.php?status=invalidemail");
+              exit();
 
             }else {
 
@@ -53,14 +55,16 @@
                 //Check if the username is taken or doesn't meet requirements
                 if ($sqlNumOfRows > 0 || !preg_match("/^[a-zA-Z0-9_]{5,20}/", $user_name)) {
 
-                    echo "http://staylooking.com/signup/index.php?status=invalidusername";
+                  header("Location: http://staylooking.com/signup/index.php?status=invalidusername");
+                  exit();
 
                 }else {
 
                     //Check if password is valid
                     if (!preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $user_pwd)) {
 
-                        echo "http://staylooking.com/signup/index.php?status=invalidpassword";
+                      header("Location: http://staylooking.com/signup/index.php?status=invalidpassword");
+                      exit();
 
                     }else {
 
@@ -74,7 +78,8 @@
                         mysqli_query($connect, $sqlInsertUserInfo);
 
                         //Bring user to login page
-                        echo "http://staylooking.com/login/index.php?status=signupsuccess";
+                        header("Location: http://staylooking.com/login/index.php?status=signupsuccess");
+                        exit();
 
                     }
 

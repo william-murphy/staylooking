@@ -11,7 +11,7 @@
 
           require_once('../recaptchalib.php');
           require_once('../sensitivestrings.php');
-          $resp = recaptcha_check_answer ($ssRecaptchaSecretKey,
+          $resp = recaptcha_check_answer ($ssRecaptchaSecretKey_U,
                   $_SERVER["REMOTE_ADDR"],
                   $_POST["recaptcha_challenge_field"],
                   $_POST["recaptcha_response_field"]);

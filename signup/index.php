@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="style.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
 
     <title>Sign Up | StayLooking</title>
@@ -76,32 +75,15 @@
             <li>Use a different password for every website.</li>
         </ul>
 
-        <div class="signup-form">
-            <input type="text" id="user_email" placeholder="Email Address..."></input>
-            <input type="text" id="user_name" placeholder="Username..."></input>
-            <input type="password" id="user_pwd" placeholder="Password..."></input>
+        <form class="signup-form" action="signup.php" method="POST">
+            <input type="text" placeholder="Email Address..."></input>
+            <input type="text" placeholder="Username..."></input>
+            <input type="password" placeholder="Password..."></input>
             <br>
-            <div class="g-recaptcha" data-sitekey="6Ld6Q0wUAAAAALrIha62i3iP7OYJLcVHIGLXKFc1"></div>
+            <div class="g-recaptcha" data-sitekey="6LeFX00UAAAAAE7-vDJlMM_46K0dZIhTLEitnvg6"></div>
             <button type="submit" id="submit">Sign Up</button>
 
-            <script type="text/javascript">
-                $("#submit").click(function () {
-                    var user_email = document.getElementById("user_email").value;
-                    var user_name = document.getElementById("user_name").value;
-                    var user_pwd = document.getElementById("user_pwd").value;
-                    $.ajax({
-                        type: "POST",
-                        url: "signup.php",
-                        data: {"user_email":user_email, "user_name":user_name, "user_pwd":user_pwd},
-                        dataType: "text",
-                        success: function(response){
-                            window.location.assign(response);
-                        }
-                    });
-                });
-            </script>
-
-        </div>
+        </form>
 
         <?php
 
