@@ -9,18 +9,33 @@
         //Check if the upload button has been pressed
         if (isset($_POST['submit'])) {
 
-          require_once('../recaptchalib.php');
+          //Get strings file
           require_once('../sensitivestrings.php');
-          $resp = recaptcha_check_answer ($ssRecaptchaSecretKey_U,
-                  $_SERVER["REMOTE_ADDR"],
-                  $_POST["recaptcha_challenge_field"],
-                  $_POST["recaptcha_response_field"]);
 
-          if (!$resp->is_valid) {
-            // What happens when the CAPTCHA was entered incorrectly
-              die ("The reCAPTCHA wasn't entered correctly. Go back and try it again." .
-              "(reCAPTCHA said: " . $resp->error . ")");
-          } else {
+          //Verify Recaptcha
+          $response = $_POST["g-recaptcha-response"];
+          $url = 'https://www.google.com/recaptcha/api/siteverify';
+          $data = array(
+             'secret' => $ssRecaptchaSecretKey_U,
+             'response' => $_POST["g-recaptcha-response"]
+          );
+          $options = array(
+              'http' => array (
+                   'method' => 'POST',
+                   'content' => http_build_query($data)
+              )
+          );
+          $context  = stream_context_create($options);
+          $verify = file_get_contents($url, false, $context);
+          $captcha_success=json_decode($verify);
+
+          //Check for captcha error, if none continue
+          if ($captcha_success->success==false) {
+
+            header("Location: http://staylooking.com/upload/index.php?status=error");
+            exit();
+
+          }else {
 
             //Include database connection file
             include_once "../ROOT_DB_CONNECT.php";

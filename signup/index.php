@@ -76,13 +76,12 @@
         </ul>
 
         <form class="signup-form" action="signup.php" method="POST">
-            <input type="text" placeholder="Email Address..."></input>
-            <input type="text" placeholder="Username..."></input>
-            <input type="password" placeholder="Password..."></input>
+            <input type="text" name="user_email" placeholder="Email Address..."></input>
+            <input type="text" name="user_name" placeholder="Username..."></input>
+            <input type="password" name="user_pwd" placeholder="Password..."></input>
             <br>
             <div class="g-recaptcha" data-sitekey="6LeFX00UAAAAAE7-vDJlMM_46K0dZIhTLEitnvg6"></div>
-            <button type="submit" id="submit">Sign Up</button>
-
+            <button type="submit" name="submit">Sign Up</button>
         </form>
 
         <?php

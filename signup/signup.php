@@ -1,20 +1,35 @@
 <?php
 
     //Check if the 'signup' button has been pressed
-    if (!empty($_POST)) {
+    if (isset($_POST['submit'])) {
 
-      require_once('../recaptchalib.php');
+      //Get strings file
       require_once('../sensitivestrings.php');
-      $resp = recaptcha_check_answer ($ssRecaptchaSecretKey_S,
-              $_SERVER["REMOTE_ADDR"],
-              $_POST["recaptcha_challenge_field"],
-              $_POST["recaptcha_response_field"]);
 
-      if (!$resp->is_valid) {
-        // What happens when the CAPTCHA was entered incorrectly
-        die ("The reCAPTCHA wasn't entered correctly. Go back and try it again." .
-         "(reCAPTCHA said: " . $resp->error . ")");
-      } else {
+      //Verify Recaptcha
+	    $response = $_POST["g-recaptcha-response"];
+	    $url = 'https://www.google.com/recaptcha/api/siteverify';
+	    $data = array(
+		     'secret' => $ssRecaptchaSecretKey_S,
+		     'response' => $_POST["g-recaptcha-response"]
+	    );
+	    $options = array(
+		      'http' => array (
+			         'method' => 'POST',
+			         'content' => http_build_query($data)
+		      )
+	    );
+	    $context  = stream_context_create($options);
+	    $verify = file_get_contents($url, false, $context);
+	    $captcha_success=json_decode($verify);
+
+      //Check for captcha error, if none continue
+      if ($captcha_success->success==false) {
+
+        header("Location: http://staylooking.com/signup/index.php?status=error");
+        exit();
+
+      }else {
 
         //Include the database connection file
         include_once "../ROOT_DB_CONNECT.php";
@@ -24,11 +39,9 @@
         $user_name = mysqli_real_escape_string($connect, $_POST['user_name']);
         $user_pwd = mysqli_real_escape_string($connect, $_POST['user_pwd']);
 
-        /*-----! Error Handlers !-----*/
-
         //Check for empty fields
         if (empty($user_email) || empty($user_name) || empty($user_pwd)) {
-
+          echo $user_email."||".$user_name."||".$user_pwd;
           header("Location: http://staylooking.com/signup/index.php?status=emptyfield");
           exit();
 
