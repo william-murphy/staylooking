@@ -26,7 +26,7 @@
       //Check for captcha error, if none continue
       if ($captcha_success->success==false) {
 
-        header("Location: http://staylooking.com/signup/index.php?status=error");
+        header("Location: http://staylooking.com/signup/index.php?status=recaperror");
         exit();
 
       }else {
