@@ -121,7 +121,7 @@
             if ($loggedin === TRUE) {
 
                 //Establish database connection
-                include_once "../ROOT_DB_CONNECT.php";
+                include_once "ROOT_DB_CONNECT.php";
 
                 //Set up date with 12 hours subtracted
                 $date = new DateTime('now', new DateTimeZone('America/New_York'));

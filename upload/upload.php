@@ -123,9 +123,6 @@
                                     //Combine username, unique number, and the file ext to form new file name
                                     $f_NewName = $last_id.".".$f_Ext;
 
-                                    //Save file to appropriate destination
-                                    $fileDestination = "../uploads/$f_NewName";
-
                                     //Insert new post into database
                                     $sqlInsertNewPost = "INSERT INTO
                                     posts (post_name, post_user, post_title, post_reports, post_likes, post_dislikes, post_date)
@@ -133,17 +130,67 @@
                                     mysqli_query($connect, $sqlInsertNewPost);
                                     $last_id = mysqli_insert_id($connect);
 
-                                    if (!move_uploaded_file($f_TmpName, $fileDestination)) {
+                                    //Get files from aws sdk for s3 implementation
+                                    require 'aws.phar';
+                                    use Aws/S3/S3Client;
+                                    use Aws/S3/Exception/S3Exception;
 
-                                        mysqli_query($connect, "DELETE FROM posts WHERE id='$last_id';");
-                                        header("Location: http://staylooking.com/upload/index.php?status=error");
-                                        exit();
+                                    //AWS info
+                                    $bucketName = 'staylooking-posts';
+                                    $IAM_KEY = $ssIAMKey;
+                                    $IAM_SECRET = $ssIAMSecret;
 
-                                    }else {
+                                    //Connect to AWS
+                                    try {
 
-                                        header("Location: http://staylooking.com/account/");
-                                        exit();
+                                      $s3 = S3Client::factory(
+                                          array(
+                                            'credentials' => array(
+                                              'key' => $IAM_KEY,
+                                              'secret' => $IAM_SECRET
+                                            ),
+                                            'version' => 'latest',
+                                            'region' => 'us-east-1'
+                                          )
+                                        );
 
+                                    } catch (Exception $e) {
+                                      die("Error: ".$e->getMessage()."Please refresh and try again.");
+                                    }
+
+                                    //Add to S3
+                                    $keyName = 'posts/'.$f_NewName;
+                                    $pathInS3 = 'https://s3.us-east-1.amazonaws.com/'.$bucketName.'/'.$keyName;
+
+                                    $caught = false;
+
+                                    try {
+                                      //Uploaded:
+                                      $s3->putObject(
+                                        array(
+                                          'Bucket'=>$bucketName,
+                                          'Key'=>$keyName,
+                                          'SourceFile'=>$f_TmpName,
+                                          'StorageClass'=>'REDUCED_REDUNDANCY'
+                                        )
+                                      );
+                                    } catch (S3Exception $e) {
+
+                                      $caught = true;
+                                      mysqli_query($connect, "DELETE FROM posts WHERE id='$last_id';");
+                                      die("Error: ".$e->getMessage()."Please refresh and try again.");
+
+                                    } catch (Exception $e) {
+
+                                      $caught = true;
+                                      mysqli_query($connect, "DELETE FROM posts WHERE id='$last_id';");
+                                      die("Error: ".$e->getMessage()."Please refresh and try again.");
+
+                                    }
+
+                                    //Test if caught and send user to account page
+                                    if ($caught != true) {
+                                      header("Location: http://staylooking.com/account/");
                                     }
 
                                 }
