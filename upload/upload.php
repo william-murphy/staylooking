@@ -155,7 +155,7 @@
                                         );
 
                                     } catch (Exception $e) {
-                                      die("Error: ".$e->getMessage()."Please refresh and try again.");
+                                      die("Error: ".$e->getMessage()." Please refresh and try again.");
                                     }
 
                                     //Add to S3
@@ -178,13 +178,13 @@
 
                                       $caught = true;
                                       mysqli_query($connect, "DELETE FROM posts WHERE id='$last_id';");
-                                      die("Error: ".$e->getMessage()."Please refresh and try again.");
+                                      die("Error: ".$e->getMessage()." Please refresh and try again.");
 
                                     } catch (Exception $e) {
 
                                       $caught = true;
                                       mysqli_query($connect, "DELETE FROM posts WHERE id='$last_id';");
-                                      die("Error: ".$e->getMessage()."Please refresh and try again.");
+                                      die("Error: ".$e->getMessage()." Please refresh and try again.");
 
                                     }
 
