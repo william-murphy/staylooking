@@ -131,7 +131,7 @@
                                     $last_id = mysqli_insert_id($connect);
 
                                     //Get files from aws sdk for s3 implementation
-                                    require '../aws.phar';
+                                    require '../vendor/autoload.php';
                                     use Aws/S3/S3Client;
                                     use Aws/S3/Exception/S3Exception;
 

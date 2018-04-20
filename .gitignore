@@ -4,6 +4,10 @@ sensitivestrings.php
 
 staylooking.zip
 
-aws.phar
+composer.phar
+vendor
+composer.lock
+composer.json
+
 
 
