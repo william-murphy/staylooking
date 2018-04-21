@@ -9,5 +9,7 @@ vendor
 composer.lock
 composer.json
 
+aws
+
 
 

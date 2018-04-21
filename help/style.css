@@ -15,7 +15,7 @@ body {
 }
 
 main {
-    flex: 1;
+	flex: 1;
 }
 
 /*HEADER STYLING--------------------------------------------------------*/
@@ -26,33 +26,33 @@ header {
 }
 
 .header-wrapper {
-    display: flex;
+	display: flex;
 }
 
 .header-left {
-    flex-basis: 25%;
+	flex-basis: 25%;
 	display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
 }
 
 .header-links {
-    color: #000000;
-    text-decoration: none;
-    font-size: 1.25em;
-    padding: 1em;
+	color: #000000;
+	text-decoration: none;
+	font-size: 1.25em;
+	padding: 1em;
 }
 
 .header-links:hover {
-    color: #cccccc;
+	color: #cccccc;
 }
 
 .header-middle {
-    flex-basis: 50%;
-    text-align: center;
-    border-bottom: 1px solid black;
+	flex-basis: 50%;
+	text-align: center;
+	border-bottom: 1px solid black;
 }
 
 .header-middle h1 {
@@ -61,95 +61,95 @@ header {
 }
 
 .header-right {
-    flex-basis: 25%;
+	flex-basis: 25%;
 	display: flex;
-    align-items: center;
+	align-items: center;
 	justify-content: center;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
 }
 
 .header-right button {
 	background-color: #a9a9a9;
 	padding: .5em 2em;
-    font-size: 1.25em;
-    border: 1px solid black;
+	font-size: 1.25em;
+	border: 1px solid black;
 }
 
 button:hover {
-    background-color: #cccccc;
+	background-color: #cccccc;
 }
 
 /*FOOTER STYLING--------------------------------------------------------*/
 
 footer {
-    width: 100%;
+	width: 100%;
 	background-color: #a9a9a9;
 }
 
 .footer-wrapper {
-    display: flex;
+	display: flex;
 }
 
 .footer-left {
-    flex-basis: 50%;
-    display: flex;
-    align-items: left;
-    justify-content: center;
-    border-top: 1px solid black;
-    border-right: 1px solid black;
+	flex-basis: 50%;
+	display: flex;
+	align-items: left;
+	justify-content: center;
+	border-top: 1px solid black;
+	border-right: 1px solid black;
 }
 
 .footer-left a {
-    color: #000000;
-    text-decoration: none;
-    font-size: 1em;
-    padding: 1em;
+	color: #000000;
+	text-decoration: none;
+	font-size: 1em;
+	padding: 1em;
 }
 
 a:hover {
-    color: #cccccc;
+color: #cccccc;
 }
 
 .footer-right {
-    flex-basis: 50%;
-    display: flex;
-    align-items: right;
-    justify-content: center;
-    border-top: 1px solid black;
+		flex-basis: 50%;
+	display: flex;
+	align-items: right;
+	justify-content: center;
+	border-top: 1px solid black;
 }
 
 .footer-right p {
-    color: #000000;
-    font-size: 1em;
-    padding: 1em;
+	color: #000000;
+	font-size: 1em;
+	padding: 1em;
 }
 
 /*CONTENT STYLING--------------------------------------------------------*/
 
 .content-main-heading {
-    text-align: left;
-    margin: 20px;
-    width: 40%;
+	text-align: left;
+	margin: 20px;
+	width: 40%;
 }
 
 .content-heading {
-    text-align: left;
-    margin: 20px;
-    width: 40%;
+	text-align: left;
+	margin: 20px;
+	width: 40%;
 }
 
 .content-p {
-    text-align: left;
-    margin: 20px;
-    width: 40%;
+	text-align: left;
+	margin: 20px;
+	width: 40%;
 }
 
 .content-link {
-    color: #000000;
-    text-decoration: underline;
+	color: #000000;
+	text-decoration: underline;
 }
 
 .content-link:hover {
-    color: #cccccc;
+	color: #cccccc;
 }
