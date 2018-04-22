@@ -184,7 +184,6 @@
 								<button id='$idP'>DELETE</button>
 								<script type='text/javascript'>
 								$(document).on('click', '#$idP', function(){
-								alert('hello??');
 								deleteImage($id);
 								});
 								</script>
@@ -276,7 +275,6 @@
 								<button id='$idL'>UNLIKE</button>
 								<script type='text/javascript'>
 								$(document).on('click', '#$idL', function(){
-								alert('hello??');
 								unlikeImage($id);
 								});
 								</script>
