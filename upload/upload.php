@@ -163,8 +163,6 @@
 										$keyName = 'posts/'.$f_NewName;
 										$pathInS3 = 'https://s3.us-east-1.amazonaws.com/'.$bucketName.'/'.$keyName;
 
-										$caught = false;
-
 										try {
 											//Uploaded:
 											$s3->putObject(
@@ -176,23 +174,16 @@
 												)
 											);
 										} catch (S3Exception $e) {
-
-											$caught = true;
 											mysqli_query($connect, "DELETE FROM posts WHERE id='$last_id';");
 											die("Error: ".$e->getMessage()." Please hit the back button and try again.");
 
 										} catch (Exception $e) {
-
-											$caught = true;
 											mysqli_query($connect, "DELETE FROM posts WHERE id='$last_id';");
 											die("Error: ".$e->getMessage()." Please hit the back button and try again.");
-
 										}
 
-										//Test if caught and send user to account page
-										if ($caught != true) {
-											header("Location: http://staylooking.com/account/");
-										}
+										//Send user to account page
+										header("Location: http://staylooking.com/account/");
 
 									}
 

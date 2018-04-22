@@ -174,7 +174,7 @@
 								echo
 								"<div class='content-container'>
 								<div class='content-image'>
-								<img src='http://staylooking.com/uploads/$name' alt='image'>
+								<img src='https://s3.amazonaws.com/staylooking-posts/posts/$name' alt='image'>
 								</div>
 								<div class='content-rating'>
 								<div class='dislike'>
@@ -266,7 +266,7 @@
 								echo
 								"<div class='content-container'>
 								<div class='content-image'>
-								<img src='http://staylooking.com/uploads/$name' alt='image'>
+								<img src='https://s3.amazonaws.com/staylooking-posts/posts/$name' alt='image'>
 								</div>
 								<div class='content-rating'>
 								<div class='dislike'>

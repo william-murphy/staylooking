@@ -1,8 +1,12 @@
 <?php
 
-	//Establish database connection and start session
+	//Get files from aws sdk for s3 implementation
+	require 'aws/aws-autoloader.php';
+	use Aws\S3\S3Client;
+	use Aws\S3\Exception\S3Exception;
 
-	include_once "../ROOT_DB_CONNECT.php";
+	//Establish database connection
+	include_once "ROOT_DB_CONNECT.php";
 
 	//Retrieve cookie for ID list and store in variable
 	$idList = unserialize($_COOKIE['idList']);
@@ -21,7 +25,7 @@
 
 		echo
 		"<div class='content-image'>
-		<img src='http://localhost/root/uploads/$name' alt='Image'>
+		<img src='https://s3.amazonaws.com/staylooking-posts/posts/$name' alt='Image'>
 		</div>
 		<div class='content-rating'>
 		<div class='rating'>
@@ -58,7 +62,20 @@
 				if ($reports >= 10) {
 
 					//Delete the image
-					unlink("http://localhost/root/uploads/$name");
+					$bucketName = 'staylooking-posts';
+					$keyName = 'posts/'.$name;
+
+					try {
+						$s3 = S3Client::factory();
+						$s3->deleteObject(array(
+	    						'Bucket' => $bucketName,
+	    						'Key'    => $keyName
+						));
+					} catch (S3Exception $e) {
+						die("Error: Could not report at this time, please refresh and try again.");
+					} catch (Exception $e) {
+						die("Error: Could not report at this time, please refresh and try again.");
+					}
 
 					//Save the user's name, then delete record from database
 					$reporteduser = mysqli_fetch_array(mysqli_query($connect, "SELECT post_user FROM posts WHERE id='$id';"))['post_user'];
@@ -158,7 +175,7 @@
 
 		echo
 		"<div class='content-image'>
-		<img src='http://localhost/root/uploads/$name' alt='Image'>
+		<img src='https://s3.amazonaws.com/staylooking-posts/posts/$name' alt='Image'>
 		</div>
 		<div class='content-rating'>
 		<div class='rating'>
