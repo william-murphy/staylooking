@@ -1,8 +1,13 @@
 <?php
 
-	//Start session and include DB connection file
-	session_start();
+	//Get files from aws sdk for s3 implementation and DB info
+	require 'aws/aws-autoloader.php';
+	use Aws\S3\S3Client;
+	use Aws\S3\Exception\S3Exception;
 	include_once "../ROOT_DB_CONNECT.php";
+
+	//Start session
+	session_start();
 
 	if (isset($_POST["id"]) && isset($_SESSION["user_name_s"])) {
 
@@ -17,17 +22,20 @@
 
 		if ($sqlPostUser == $user) {
 
-			//Check for error deleting file
-			if (!unlink("../uploads/$sqlFileName")) {
+			//Delete the image
+			$bucketName = 'staylooking-posts';
+			$keyName = 'posts/'.$name;
 
-				exit();
-
-			} else {
-
-				//Delete record from database
-				$sqlDelete = "DELETE FROM posts WHERE id='$id';";
-				mysqli_query($connect, $sqlDelete);
-
+			try {
+				$s3 = S3Client::factory();
+				$s3->deleteObject(array(
+					'Bucket' => $bucketName,
+					'Key'    => $keyName
+				));
+			} catch (S3Exception $e) {
+				die("Error: Could not report at this time, please refresh and try again.");
+			} catch (Exception $e) {
+				die("Error: Could not report at this time, please refresh and try again.");
 			}
 
 		}else {
