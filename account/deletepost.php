@@ -1,7 +1,7 @@
 <?php
 
 	//Get files from aws sdk for s3 implementation and DB info
-	require 'aws/aws-autoloader.php';
+	require '../aws/aws-autoloader.php';
 	use Aws\S3\S3Client;
 	use Aws\S3\Exception\S3Exception;
 	include_once "../ROOT_DB_CONNECT.php";
