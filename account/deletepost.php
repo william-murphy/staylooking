@@ -5,6 +5,7 @@
 	use Aws\S3\S3Client;
 	use Aws\S3\Exception\S3Exception;
 	include_once "../ROOT_DB_CONNECT.php";
+	require_once('../sensitivestrings.php');
 
 	//Start session
 	session_start();
@@ -24,19 +25,34 @@
 
 			//Delete the image
 			$bucketName = 'staylooking-posts';
-			$keyName = 'posts/'.$name;
+			$keyName = 'posts/'.$sqlFileName;
+			$IAM_KEY = $ssIAMKey;
+			$IAM_SECRET = $ssIAMSecret;
 
 			try {
-				$s3 = S3Client::factory();
+				$s3 = S3Client::factory(
+					array(
+						'credentials' => array(
+							'key' => $IAM_KEY,
+							'secret' => $IAM_SECRET
+						),
+						'version' => 'latest',
+						'region' => 'us-east-1'
+					)
+				);
 				$s3->deleteObject(array(
 					'Bucket' => $bucketName,
 					'Key'    => $keyName
 				));
 			} catch (S3Exception $e) {
-				die("Error: Could not report at this time, please refresh and try again.");
+				exit();
 			} catch (Exception $e) {
-				die("Error: Could not report at this time, please refresh and try again.");
+				exit();
 			}
+
+			//Delete record from database
+			$sqlDelete = "DELETE FROM posts WHERE id='$id';";
+			mysqli_query($connect, $sqlDelete);
 
 		}else {
 
