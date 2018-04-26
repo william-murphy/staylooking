@@ -15,10 +15,9 @@
 		if (mysqli_num_rows(mysqli_query($connect, $sqlCheckLiked)) > 0) {
 
 			//Delete record from database
-			$sqlDelete = "DELETE FROM liked WHERE liked_id = '$id' AND liked_name = '$user';";
-			$sqlSubtractLike = "UPDATE posts SET post_likes = post_likes - 1 WHERE id = '$id';";
-			mysqli_query($connect, $sqlDelete);
-			mysqli_query($connect, $sqlSubtractLike);
+			$sqlUnlike = "DELETE FROM liked WHERE liked_id = '$id' AND liked_name = '$user';
+			UPDATE posts SET post_likes = post_likes - 1 WHERE id = '$id';";
+			mysqli_query($connect, $sqlUnlike);
 		}
 
 	}

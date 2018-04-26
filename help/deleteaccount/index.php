@@ -113,7 +113,7 @@
 						$user_name = $_SESSION['user_name_s'];
 
 						//Get the filenames of all the user's posts
-						$sqlSearchAllPostNames = "SELECT post_name FROM posts WHERE post_user='$user_name' LIMIT 20;";
+						$sqlSearchAllPostNames = "SELECT post_name, id FROM posts WHERE post_user='$user_name' LIMIT 20;";
 						$sqlGetAllPostNames = mysqli_query($connect, $sqlSearchAllPostNames);
 
 						//Loop through the images and delete

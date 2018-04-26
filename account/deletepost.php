@@ -51,7 +51,8 @@
 			}
 
 			//Delete record from database
-			$sqlDelete = "DELETE FROM posts WHERE id='$id';";
+			$sqlDelete = "DELETE FROM posts WHERE id='$id';
+			DELETE FROM liked WHERE liked_id = '$id' AND liked_name = '$user';";
 			mysqli_query($connect, $sqlDelete);
 
 		}else {
