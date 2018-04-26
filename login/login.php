@@ -1,5 +1,11 @@
 <?php
 
+	//Include DB connectiion and S3 files
+	require '../aws/aws-autoloader.php';
+	use Aws\S3\S3Client;
+	use Aws\S3\Exception\S3Exception;
+	require_once('../sensitivestrings.php');
+
 	//Start the session
 	session_start();
 
@@ -58,14 +64,33 @@
 						//Loop through the images and delete
 						while ($postname = mysqli_fetch_array($sqlGetAllPostNames)['post_name']) {
 
-							if (file_exists("../uploads/$postname")) {/*If file exists, delete, otherwise continue*/
+							//Delete the image
+							$bucketName = 'staylooking-posts';
+							$keyName = 'posts/'.$postname;
+							$IAM_KEY = $ssIAMKey;
+							$IAM_SECRET = $ssIAMSecret;
 
-								unlink("../uploads/$postname");
-
-							}else {
-
-								continue;
-
+							try {
+								$s3 = S3Client::factory(
+									array(
+										'credentials' => array(
+											'key' => $IAM_KEY,
+											'secret' => $IAM_SECRET
+										),
+										'version' => 'latest',
+										'region' => 'us-east-1'
+									)
+								);
+								$s3->deleteObject(array(
+									'Bucket' => $bucketName,
+									'Key'    => $keyName
+								));
+							} catch (S3Exception $e) {
+								echo "http://staylooking.com/help/deleteaccount/index.php?status=error";
+								exit();
+							} catch (Exception $e) {
+								echo "http://staylooking.com/help/deleteaccount/index.php?status=error";
+								exit();
 							}
 
 						}
