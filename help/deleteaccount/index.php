@@ -170,7 +170,7 @@
 
 					}else {
 
-						header("Location: http://staylooking.com/help/");
+						header("Location: http://staylooking.com/help/deleteaccount/index.php?status=error");
 						exit();
 
 					}
