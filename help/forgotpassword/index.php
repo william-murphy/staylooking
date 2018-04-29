@@ -87,7 +87,7 @@
 
 				if (isset($_POST['submit'])) {
 
-					if (isset($_SESSION['user_name_s'])) {
+					if ($loggedin == true) {
 
 						$email = mysqli_real_escape_string($connect, $_POST['email']);
 						$name = $_SESSION['user_name_s'];
@@ -137,7 +137,7 @@
 
 				}else {
 
-					header("Location: http://staylooking.com/help/forgotpassword/index.php");
+					header("Location: http://staylooking.com/help/index.php");
 					exit();
 
 				}
