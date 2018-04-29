@@ -135,13 +135,7 @@
 
 					}
 
-				}else {
-
-					header("Location: http://staylooking.com/help/index.php");
-					exit();
-
 				}
-
 
 			?>
 
