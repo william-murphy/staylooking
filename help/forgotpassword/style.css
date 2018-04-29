@@ -146,3 +146,43 @@ a:hover {
 }
 
 /*CONTENT STYLING--------------------------------------------------------*/
+
+.content-heading {
+	text-align: left;
+	margin: 20px;
+	width: 40%;
+}
+
+.content-p {
+	text-align: left;
+	margin: 20px;
+	width: 40%;
+}
+
+.content-form input {
+	margin: 4em 2em;
+	padding: 10px 20px;
+	font-size: 1.1em;
+	background-color: #a9a9a9;
+	border: 1px solid black;
+}
+
+.content-form input:hover {
+	background-color: #cccccc;
+}
+
+.content-form input::placeholder {
+	color: black;
+}
+
+.content-button {
+	font-size: 20px;
+	margin-left: 20px;
+	padding: 4px 10px 4px 10px;
+	border: 1px solid black;
+	background-color: #a9a9a9;
+}
+
+.content-button:hover {
+	background-color: #cccccc;
+}

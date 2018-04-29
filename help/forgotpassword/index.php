@@ -71,7 +71,14 @@
 
 		<main>
 
-			<h1>This page is coming soon. Try not to forget your password in the meantime.</h1>
+			<h1>Forgotten Password</h1>
+
+			<form class="content-form" action="changepassword.php" method="POST">
+				<input class="content-input" name="email" type="text" placeholder="This Account's Email..."></input>
+				<input class="content-input" name="pwd" type="text" placeholder="New password..."></input>
+				<input class="content-input" name="confirm" type="text" placeholder="Confirm password..."></input>
+				<input class="content-button" name="submit" type="submit" value="Change Password"></input>
+			</form>
 
 		</main>
 
@@ -91,7 +98,7 @@
 				</div>
 
 			</div>
-			
+
 		</footer>
 
 	</body>

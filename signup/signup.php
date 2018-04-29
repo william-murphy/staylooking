@@ -41,7 +41,7 @@
 
 			//Check for empty fields
 			if (empty($user_email) || empty($user_name) || empty($user_pwd)) {
-				echo $user_email."||".$user_name."||".$user_pwd;
+				
 				header("Location: http://staylooking.com/signup/index.php?status=emptyfield");
 				exit();
 
