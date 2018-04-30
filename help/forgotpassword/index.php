@@ -75,8 +75,8 @@
 
 			<form class="content-form" method="POST">
 				<input class="content-input" name="email" type="text" placeholder="This Account's Email..."></input>
-				<input class="content-input" name="pwd" type="text" placeholder="New password..."></input>
-				<input class="content-input" name="confirm" type="text" placeholder="Confirm password..."></input>
+				<input class="content-input" name="pwd" type="password" placeholder="New password..."></input>
+				<input class="content-input" name="confirm" type="password" placeholder="Confirm password..."></input>
 				<input class="content-button" name="submit" type="submit" value="Change Password"></input>
 			</form>
 
@@ -91,24 +91,26 @@
 
 						$email = mysqli_real_escape_string($connect, $_POST['email']);
 						$name = $_SESSION['user_name_s'];
-						$pwd = $_POST['pwd'];
-						$confirm = $_POST['confirm'];
+						$pwd = mysqli_real_escape_string($connect, $_POST['pwd']);
+						$confirm = mysqli_real_escape_string($connect, $_POST['confirm']);
 						$sqlGetEmail = "SELECT * FROM users WHERE user_email='$email' AND user_name='$name';";
 						$result = mysqli_query($connect, $sqlGetEmail);
 
 						if (mysqli_num_rows($result) > 0) {
 
-							if ($pwd == $confirm) {
+							if ($pwd == $confirm || preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $pwd)) {
 
-								$hashedPwd = password_hash($user_pwd, PASSWORD_DEFAULT);
-								$sqlUpdatePwd = "UPDATE users SET user_pwd = '$hashedPwd' WHERE user_name='$name';";
+								echo $pwd;
+
+								$hash = password_hash($pwd, PASSWORD_DEFAULT);
+								$sqlUpdatePwd = "UPDATE users SET user_pwd='$hash' WHERE user_name='$name';";
 								if (!mysqli_query($connect, $sqlUpdatePwd)) {
 
 									echo "<p class='content-p'>Unknown error changing password.</p>";
 									exit();
 
 								}else {
-
+									echo $hash;
 									echo "<p class='content-p'>Successfully changed password.</p>";
 									exit();
 
@@ -116,7 +118,7 @@
 
 							}else {
 
-								echo "<p class='content-p'>The passwords you entered don't match.</p>";
+								echo "<p class='content-p'>The passwords you entered don't match, or don't meet the password requirements.</p>";
 								exit();
 
 							}
