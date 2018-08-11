@@ -73,6 +73,10 @@
 
 			<h1>Forgotten Password</h1>
 
+			<p> This page is not available yet. </p>
+
+			<!--
+
 			<form class="content-form" method="POST">
 				<input class="content-input" name="email" type="text" placeholder="This Account's Email..."></input>
 				<input class="content-input" name="pwd" type="password" placeholder="New password..."></input>
@@ -81,7 +85,7 @@
 			</form>
 
 			<?php
-
+				/*
 				include_once "../../ROOT_DB_CONNECT.php";
 				session_start();
 
@@ -100,8 +104,6 @@
 
 							if ($pwd == $confirm || preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $pwd)) {
 
-								echo $pwd;
-
 								$hash = password_hash($pwd, PASSWORD_DEFAULT);
 								$sqlUpdatePwd = "UPDATE users SET user_pwd='$hash' WHERE user_name='$name';";
 								if (!mysqli_query($connect, $sqlUpdatePwd)) {
@@ -110,7 +112,7 @@
 									exit();
 
 								}else {
-									echo $hash;
+
 									echo "<p class='content-p'>Successfully changed password.</p>";
 									exit();
 
@@ -138,9 +140,9 @@
 					}
 
 				}
-
+				*/
 			?>
-
+		-->
 		</main>
 
 		<footer>
