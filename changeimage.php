@@ -29,13 +29,13 @@
 		</div>
 		<div class='content-rating'>
 		<div class='rating'>
-		<button id='dislikeButton'>$dislikes</button>
+		<button id='dislikeButton'><p>&#x1F92E</p>$dislikes</button>
 		</div>
 		<div class='report'>
 		<button id='reportButton'>REPORT</button>
 		</div>
 		<div class='rating'>
-		<button id='likeButton'>$likes</button>
+		<button id='likeButton'><p>&#x1F525</p>$likes</button>
 		</div>
 		</div>
 		<div class='content-title'>
@@ -109,6 +109,7 @@
 				break;
 
 			case 'like':
+
 				//Start session and shnag username
 				session_start();
 				$user = $_SESSION["user_name_s"];
@@ -133,9 +134,25 @@
 
 			case 'dislike':
 
-				//Update the post's dislikes to add 1
-				$sqlAddDislike = "UPDATE posts SET post_dislikes = post_dislikes + 1 WHERE id = '$id';";
-				mysqli_query($connect, $sqlAddDislike);
+				//Start session and shnag username
+				session_start();
+				$user = $_SESSION["user_name_s"];
+
+				//Check if the user has already liked the image
+				$sqlCheckDuplicateDislike = "SELECT * FROM disliked WHERE disliked_id = '$id' AND disliked_name = '$user' LIMIT 1;";
+				if (mysqli_num_rows(mysqli_query($connect, $sqlCheckDuplicateDislike)) < 1) {
+
+					//Update the post's dislikes to add 1
+					$sqlAddDislike = "UPDATE posts SET post_dislikes = post_dislikes + 1 WHERE id = '$id';";
+					mysqli_query($connect, $sqlAddDislike);
+
+					//Insert the like into the database
+					$sqlInsertDislike = "INSERT INTO disliked
+					(disliked_name, disliked_id)
+					VALUES ('$user', '$id');";
+					mysqli_query($connect, $sqlInsertDislike);
+
+				}
 
 				break;
 
@@ -190,13 +207,13 @@
 		</div>
 		<div class='content-rating'>
 		<div class='rating'>
-		<button id='dislikeButton'>$dislikes</button>
+		<button id='dislikeButton'><p>&#x1F92E</p>$dislikes</button>
 		</div>
 		<div class='report'>
 		<button id='reportButton'>REPORT</button>
 		</div>
 		<div class='rating'>
-		<button id='likeButton'>$likes</button>
+		<button id='likeButton'><p>&#x1F525</p>$likes</button>
 		</div>
 		</div>
 		<div class='content-title'>
