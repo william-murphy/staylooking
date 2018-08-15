@@ -153,7 +153,7 @@
 						DELETE FROM disliked WHERE disliked_name='$user_name';
 						DELETE FROM liked WHERE liked_name='$user_name';";
 
-						if (!mysqli_query($connect, $sqlDeleteAccount)) {
+						if (!mysqli_multi_query($connect, $sqlDeleteAccount)) {
 
 							header("Location: http://staylooking.com/help/deleteaccount/index.php?status=error");
 							exit();

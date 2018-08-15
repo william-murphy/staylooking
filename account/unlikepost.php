@@ -17,7 +17,8 @@
 			//Delete record from database
 			$sqlUnlike = "DELETE FROM liked WHERE liked_id = '$id' AND liked_name = '$user';
 			UPDATE posts SET post_likes = post_likes - 1 WHERE id = '$id';";
-			mysqli_query($connect, $sqlUnlike);
+			mysqli_multi_query($connect, $sqlUnlike);
+
 		}
 
 	}

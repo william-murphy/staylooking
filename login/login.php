@@ -94,7 +94,7 @@
 						DELETE FROM users WHERE user_name='$user_name';
 						DELETE FROM disliked WHERE disliked_name='$user_name';
 						DELETE FROM liked WHERE liked_name='$user_name';";
-						mysqli_query($connect, $sqlDelete);
+						mysqli_multi_query($connect, $sqlDelete);
 
 						echo "http://staylooking.com/login/index.php?status=userbanned";
 
