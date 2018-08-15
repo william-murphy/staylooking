@@ -71,24 +71,20 @@
 							$IAM_KEY = $ssIAMKey;
 							$IAM_SECRET = $ssIAMSecret;
 
-							try {
-								$s3 = S3Client::factory(
-									array(
-										'credentials' => array(
-											'key' => $IAM_KEY,
-											'secret' => $IAM_SECRET
-										),
-										'version' => 'latest',
-										'region' => 'us-east-1'
-									)
-								);
-								$s3->deleteObject(array(
-									'Bucket' => $bucketName,
-									'Key'    => $keyName
-								));
-							} catch (S3Exception $e) {
-								unset($e);
-							}
+							$s3 = S3Client::factory(
+								array(
+									'credentials' => array(
+										'key' => $IAM_KEY,
+										'secret' => $IAM_SECRET
+									),
+									'version' => 'latest',
+									'region' => 'us-east-1'
+								)
+							);
+							$s3->deleteObject(array(
+								'Bucket' => $bucketName,
+								'Key'    => $keyName
+							));
 
 						}
 
