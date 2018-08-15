@@ -1,7 +1,6 @@
 <?php
 
 	//Get files from aws sdk for s3 implementation and DB info
-	require '../aws/aws-autoloader.php';
 	use Aws\S3\S3Client;
 	use Aws\S3\Exception\S3Exception;
 	include_once "../ROOT_DB_CONNECT.php";
@@ -22,6 +21,8 @@
 		$sqlPostUser = mysqli_fetch_array(mysqli_query($connect, $sqlGetPostInfo))['post_user'];
 
 		if ($sqlPostUser == $user) {
+
+			require '../aws/aws-autoloader.php';
 
 			//Delete the image
 			$bucketName = 'staylooking-posts';
@@ -45,14 +46,11 @@
 					'Key'    => $keyName
 				));
 			} catch (S3Exception $e) {
-				exit();
-			} catch (Exception $e) {
-				exit();
+				die("Error: could not delete post at this time, refresh and try again.");
 			}
 
 			//Delete record from database
-			$sqlDelete = "DELETE FROM posts WHERE id='$id';
-			DELETE FROM liked WHERE liked_id = '$id' AND liked_name = '$user';";
+			$sqlDelete = "DELETE FROM posts WHERE id='$id'; DELETE FROM liked WHERE liked_id = '$id';";
 			mysqli_query($connect, $sqlDelete);
 
 		}else {

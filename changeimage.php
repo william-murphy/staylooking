@@ -1,7 +1,6 @@
 <?php
 
 	//Get files from aws sdk for s3 implementation
-	require 'aws/aws-autoloader.php';
 	use Aws\S3\S3Client;
 	use Aws\S3\Exception\S3Exception;
 
@@ -48,7 +47,10 @@
 		switch($_POST['changeType']) {
 
 			case 'report':
-				//Update the post's reports for funzies
+
+				require 'aws/aws-autoloader.php';
+
+				//Update the post's reports
 				$sqlAddReport = "UPDATE posts SET post_reports = post_reports + 1 WHERE id = '$id';";
 				mysqli_query($connect, $sqlAddReport);
 
@@ -67,26 +69,21 @@
 					$IAM_KEY = $ssIAMKey;
 					$IAM_SECRET = $ssIAMSecret;
 
-					try {
-						$s3 = S3Client::factory(
-							array(
-								'credentials' => array(
-									'key' => $IAM_KEY,
-									'secret' => $IAM_SECRET
-								),
-								'version' => 'latest',
-								'region' => 'us-east-1'
-							)
-						);
-						$s3->deleteObject(array(
-							'Bucket' => $bucketName,
-							'Key'    => $keyName
-						));
-					} catch (S3Exception $e) {
-						die("Error: Could not report at this time, please refresh and try again.");
-					} catch (Exception $e) {
-						die("Error: Could not report at this time, please refresh and try again.");
-					}
+					//Delete the picture from s3
+					$s3 = S3Client::factory(
+						array(
+							'credentials' => array(
+								'key' => $IAM_KEY,
+								'secret' => $IAM_SECRET
+							),
+							'version' => 'latest',
+							'region' => 'us-east-1'
+						)
+					);
+					$s3->deleteObject(array(
+						'Bucket' => $bucketName,
+						'Key'    => $keyName
+					));
 
 					//Save the user's name, then delete record from database
 					$reporteduser = mysqli_fetch_array(mysqli_query($connect, "SELECT post_user FROM posts WHERE id='$id';"))['post_user'];

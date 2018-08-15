@@ -1,7 +1,6 @@
 <?php
 
 	//Include DB connectiion and S3 files
-	require '../aws/aws-autoloader.php';
 	use Aws\S3\S3Client;
 	use Aws\S3\Exception\S3Exception;
 	require_once('../sensitivestrings.php');
@@ -57,6 +56,8 @@
 
 					if ($is_banned > 0) {
 
+						require '../aws/aws-autoloader.php';
+
 						//Get the filenames of all the user's posts
 						$sqlSearchAllPostNames = "SELECT post_name FROM posts WHERE post_user='$user_name' LIMIT 20;";
 						$sqlGetAllPostNames = mysqli_query($connect, $sqlSearchAllPostNames);
@@ -86,11 +87,7 @@
 									'Key'    => $keyName
 								));
 							} catch (S3Exception $e) {
-								echo "http://staylooking.com/help/deleteaccount/index.php?status=error";
-								exit();
-							} catch (Exception $e) {
-								echo "http://staylooking.com/help/deleteaccount/index.php?status=error";
-								exit();
+								unset($e);
 							}
 
 						}
@@ -99,6 +96,7 @@
 						$sqlDelete = "INSERT INTO banned (ban_email) VALUES ('$user_email');
 						DELETE FROM posts WHERE post_user='$user_name';
 						DELETE FROM users WHERE user_name='$user_name';
+						DELETE FROM disliked WHERE disliked_name='$user_name';
 						DELETE FROM liked WHERE liked_name='$user_name';";
 						mysqli_query($connect, $sqlDelete);
 
