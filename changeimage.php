@@ -43,61 +43,77 @@
 
 	}else {
 
+		//Start session and get username
+		session_start();
+		$user = $_SESSION["user_name_s"];
+
 		//Switch the changeType variable to find out which button was pressed
 		switch($_POST['changeType']) {
 
 			case 'report':
 
-				require 'aws/aws-autoloader.php';
+				//Check if the user has already reported the image
+				$sqlCheckDuplicateReport = "SELECT * FROM reported WHERE reported_id = '$id' AND reported_name = '$user' LIMIT 1;";
+				if (mysqli_num_rows(mysqli_query($connect, $sqlCheckDuplicateReport)) < 1) {
 
-				//Update the post's reports
-				$sqlAddReport = "UPDATE posts SET post_reports = post_reports + 1 WHERE id = '$id';";
-				mysqli_query($connect, $sqlAddReport);
+					//Update the post's likes to add 1
+					$sqlAddReport = "UPDATE posts SET post_reports = post_reports + 1 WHERE id = '$id';";
+					mysqli_query($connect, $sqlAddReport);
 
-				//Fetch the post's number of reports and name
-				$sqlFetchReportsAndName = "SELECT post_reports, post_name FROM posts WHERE id='$id' LIMIT 1;";
-				$sqlReportsAndName = mysqli_fetch_array(mysqli_query($connect, $sqlFetchReportsAndName));
-				$reports = $sqlReportsAndName['post_reports'];
-				$name = $sqlReportsAndName['post_name'];
+					//Insert the like into the database
+					$sqlInsertReport = "INSERT INTO reported
+					(reported_name, reported_id)
+					VALUES ('$user', '$id');";
+					mysqli_query($connect, $sqlInsertReport);
 
-				//Test if the reports has reached the limit
-				if ($reports >= 10) {
+					require 'aws/aws-autoloader.php';
 
-					//Delete the image
-					$bucketName = 'staylooking-posts';
-					$keyName = 'posts/'.$name;
-					$IAM_KEY = $ssIAMKey;
-					$IAM_SECRET = $ssIAMSecret;
+					//Fetch the post's number of reports and name
+					$sqlFetchReportsAndName = "SELECT post_reports, post_name FROM posts WHERE id='$id' LIMIT 1;";
+					$sqlReportsAndName = mysqli_fetch_array(mysqli_query($connect, $sqlFetchReportsAndName));
+					$reports = $sqlReportsAndName['post_reports'];
+					$name = $sqlReportsAndName['post_name'];
 
-					//Delete the picture from s3
-					$s3 = S3Client::factory(
-						array(
-							'credentials' => array(
-								'key' => $IAM_KEY,
-								'secret' => $IAM_SECRET
-							),
-							'version' => 'latest',
-							'region' => 'us-east-1'
-						)
-					);
-					$s3->deleteObject(array(
-						'Bucket' => $bucketName,
-						'Key'    => $keyName
-					));
+					//Test if the reports has reached the limit
+					if ($reports >= 10) {
 
-					//Save the user's name, then delete record from database
-					$reporteduser = mysqli_fetch_array(mysqli_query($connect, "SELECT post_user FROM posts WHERE id='$id';"))['post_user'];
-					mysqli_query($connect, "DELETE FROM posts WHERE id='$id';");
+						//Delete the image
+						$bucketName = 'staylooking-posts';
+						$keyName = 'posts/'.$name;
+						$IAM_KEY = $ssIAMKey;
+						$IAM_SECRET = $ssIAMSecret;
 
-					//Add report to offender's account
-					mysqli_query($connect, "UPDATE users SET user_reports = user_reports + 1 WHERE user_name='$reporteduser';");
+						//Delete the picture from s3
+						$s3 = S3Client::factory(
+							array(
+								'credentials' => array(
+									'key' => $IAM_KEY,
+									'secret' => $IAM_SECRET
+								),
+								'version' => 'latest',
+								'region' => 'us-east-1'
+							)
+						);
+						$s3->deleteObject(array(
+							'Bucket' => $bucketName,
+							'Key'    => $keyName
+						));
 
-					//Check if the user has reached report limit
-					$sqlReportsOnUser = mysqli_fetch_array(mysqli_query($connect, "SELECT user_reports FROM users WHERE user_name='$reporteduser';"))['user_reports'];
-					if ($sqlReportsOnUser >= 10) {
+						//Save the user's name, then delete record from database
+						$reporteduser = mysqli_fetch_array(mysqli_query($connect, "SELECT post_user FROM posts WHERE id='$id';"))['post_user'];
+						mysqli_query($connect, "DELETE FROM posts WHERE id='$id';");
 
-						//Change user_banned to true
-						mysqli_query($connect, "UPDATE users SET user_banned = 1 WHERE user_name = '$reporteduser';");
+						//Add report to offender's account
+						mysqli_query($connect, "UPDATE users SET user_reports = user_reports + 1 WHERE user_name='$reporteduser';");
+
+						//Check if the user has reached report limit
+						$sqlReportsOnUser = mysqli_fetch_array(mysqli_query($connect, "SELECT user_reports FROM users WHERE user_name='$reporteduser';"))['user_reports'];
+						if ($sqlReportsOnUser >= 10) {
+
+							//Change user_banned to true
+							mysqli_query($connect, "UPDATE users SET user_banned = 1 WHERE user_name = '$reporteduser';");
+
+						}
 
 					}
 
@@ -106,10 +122,6 @@
 				break;
 
 			case 'like':
-
-				//Start session and shnag username
-				session_start();
-				$user = $_SESSION["user_name_s"];
 
 				//Check if the user has already liked the image
 				$sqlCheckDuplicateLike = "SELECT * FROM liked WHERE liked_id = '$id' AND liked_name = '$user' LIMIT 1;";
@@ -131,11 +143,7 @@
 
 			case 'dislike':
 
-				//Start session and shnag username
-				session_start();
-				$user = $_SESSION["user_name_s"];
-
-				//Check if the user has already liked the image
+				//Check if the user has already disliked the image
 				$sqlCheckDuplicateDislike = "SELECT * FROM disliked WHERE disliked_id = '$id' AND disliked_name = '$user' LIMIT 1;";
 				if (mysqli_num_rows(mysqli_query($connect, $sqlCheckDuplicateDislike)) < 1) {
 

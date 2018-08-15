@@ -178,7 +178,7 @@
 								</div>
 								<div class='content-rating'>
 								<div class='dislike'>
-								<p>&#x1F92E$dislikes</p>
+								<p>&#x1F92E $dislikes</p>
 								</div>
 								<div class='delete'>
 								<button id='$idP'>DELETE</button>
@@ -189,7 +189,7 @@
 								</script>
 								</div>
 								<div class='like'>
-								<p>&#x1F525$likes</p>
+								<p>&#x1F525 $likes</p>
 								</div>
 								</div>
 								<div class='content-title'>
@@ -269,7 +269,7 @@
 								</div>
 								<div class='content-rating'>
 								<div class='dislike'>
-								<p>&#x1F92E$dislikes</p>
+								<p>&#x1F92E $dislikes</p>
 								</div>
 								<div class='delete'>
 								<button id='$idL'>UNLIKE</button>
@@ -280,7 +280,7 @@
 								</script>
 								</div>
 								<div class='like'>
-								<p>&#x1F525$likes</p>
+								<p>&#x1F525 $likes</p>
 								</div>
 								</div>
 								<div class='content-title'>
