@@ -46,7 +46,7 @@
 					'Key'    => $keyName
 				));
 			} catch (S3Exception $e) {
-				die("Error: could not delete post at this time, refresh and try again.");
+				unset($e);
 			}
 
 			//Delete record from database

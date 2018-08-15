@@ -98,7 +98,6 @@
 			<?php
 
 				//Include DB connectiion and S3 files
-				require '../../aws/aws-autoloader.php';
 				use Aws\S3\S3Client;
 				use Aws\S3\Exception\S3Exception;
 				require_once('../../sensitivestrings.php');
@@ -115,6 +114,8 @@
 						//Get the filenames of all the user's posts
 						$sqlSearchAllPostNames = "SELECT post_name, id FROM posts WHERE post_user='$user_name' LIMIT 20;";
 						$sqlGetAllPostNames = mysqli_query($connect, $sqlSearchAllPostNames);
+
+						require '../../aws/aws-autoloader.php';
 
 						//Loop through the images and delete
 						while ($postname = mysqli_fetch_array($sqlGetAllPostNames)['post_name']) {
@@ -141,11 +142,7 @@
 									'Key'    => $keyName
 								));
 							} catch (S3Exception $e) {
-								header("Location: http://staylooking.com/help/deleteaccount/index.php?status=error");
-								exit();
-							} catch (Exception $e) {
-								header("Location: http://staylooking.com/help/deleteaccount/index.php?status=error");
-								exit();
+								unset($e);
 							}
 
 						}
@@ -153,6 +150,7 @@
 						//Delete all user's images and user's records
 						$sqlDeleteAccount = "DELETE FROM posts WHERE post_user='$user_name';
 						DELETE FROM users WHERE user_name='$user_name';
+						DELETE FROM disliked WHERE disliked_name='$user_name';
 						DELETE FROM liked WHERE liked_name='$user_name';";
 
 						if (!mysqli_query($connect, $sqlDeleteAccount)) {
