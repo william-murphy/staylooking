@@ -77,28 +77,47 @@
 
 			<?php
 
-				if ($loggedin === TRUE) {
+				if ($loggedin == TRUE) {
 
-					echo
-					"<div class='upload'>
-					<div class='upload-info'>
-					<ul>
-					<li>Titles must be between 5 and 48 characters</li>
-					<li>Titles should accurately describe the content of the image</li>
-					<li>Titles and images not about clothes could result in a ban</li>
-					<li>Images should be .jpg, .png, or .jpeg</li>
-					<li>Images must be less than 1 megabyte</li>
-					<li>Users may only have 20 images on their account at one time</li>
-					</ul>
-					</div>
-					<form class='upload-form' action='upload.php' method='POST' enctype='multipart/form-data'>
-					<input type='text' name='title' placeholder='Title...'></input>
-					<input type='file' name='image'></input>
-					<br>
-					<div class='g-recaptcha' data-sitekey='6LdmXk0UAAAAAD3-bS66qDz_Sm2mMxjTkMjRUUAt'></div>
-					<button type='submit' name='submit'>Upload</button>
-					</form>
-					</div>";
+					//Include the database connection file
+					include_once "../ROOT_DB_CONNECT.php";
+
+					$user = $_SESSION['user_name_s'];
+
+					$active = mysqli_fetch_array(mysqli_query($connect,"SELECT active FROM users WHERE user_name='$user';"))['active'];
+
+					if ($active > 0) {
+
+						echo
+						"<div class='upload'>
+						<div class='upload-info'>
+						<ul>
+						<li>Titles must be between 5 and 48 characters</li>
+						<li>Titles should accurately describe the content of the image</li>
+						<li>Titles and images not about clothes could result in a ban</li>
+						<li>Images should be .jpg, .png, or .jpeg</li>
+						<li>Images must be less than 1 megabyte</li>
+						<li>Users may only have 20 images on their account at one time</li>
+						</ul>
+						</div>
+						<form class='upload-form' action='upload.php' method='POST' enctype='multipart/form-data'>
+						<input type='text' name='title' placeholder='Title...'></input>
+						<input type='file' name='image'></input>
+						<br>
+						<div class='g-recaptcha' data-sitekey='6LdmXk0UAAAAAD3-bS66qDz_Sm2mMxjTkMjRUUAt'></div>
+						<button type='submit' name='submit'>Upload</button>
+						</form>
+						</div>";
+
+					}else {
+
+						echo
+						"<div class='error'>
+						<p> Your email isn't verified, </p>
+						<a class='error-links' href='http://staylooking.com/help/resendverify/index.php'>Click here to resend the verification email</a>
+						</div>";
+
+					}
 
 				}else {
 
@@ -171,7 +190,7 @@
 		</main>
 
 		<footer>
-			
+
 			<div class="footer-wrapper">
 
 				<div class="footer-left">

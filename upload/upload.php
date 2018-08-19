@@ -9,8 +9,13 @@
 	//Check if the session variable for username is set (user is logged in)
 	if (isset($_SESSION['user_name_s'])) {
 
+		//Check if user is already verified
+		include_once "../ROOT_DB_CONNECT.php";
+		$user = $_SESSION['user_name_s'];
+		$active = mysqli_fetch_array(mysqli_query($connect,"SELECT active FROM users WHERE user_name='$user';"))['active'];
+
 		//Check if the upload button has been pressed
-		if (isset($_POST['submit'])) {
+		if (isset($_POST['submit']) && $active > 0) {
 
 			//Get strings file
 			require_once('../sensitivestrings.php');

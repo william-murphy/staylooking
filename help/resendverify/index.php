@@ -7,13 +7,13 @@
 		<meta charset="utf-8"/>
 		<meta property="og.type" content="website"/>
 		<meta property="og.site_name" content="StayLooking"/>
-		<meta property="og.title" content="Help | StayLooking"/>
+		<meta property="og.title" content="Resend Verification | StayLooking"/>
 		<meta property="og.url" content="http://www.staylooking.com"/>
 
 		<link rel="stylesheet" href="style.css" type="text/css">
 		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 
-		<title>Help | StayLooking</title>
+		<title>Resend Verification | StayLooking</title>
 
 	</head>
 
@@ -71,46 +71,58 @@
 
 		<main>
 
-			<h1 class="content-main-heading">Help</h1>
+			<h1 class='content-main-heading'> Resend Verification Email </h1>
 
-			<h2 class="content-heading">Why does something not work?</h2>
+			<?php
 
-			<p class="content-p">
-				Because I need to fix it, please email me
-				with the subject 'Found Bug' and a description of the issue
-				to the email on the <a class="content-link" href="http://staylooking.com/contact/">contact</a>
-				page.
-			</p>
+				if ($loggedin == TRUE) {
 
-			<h2 class="content-heading">Why am I banned?</h2>
+					include_once "../../ROOT_DB_CONNECT.php";
+					$user = $_SESSION['user_name_s'];
 
-			<p class="content-p">
-				Each post is allowed 10 reports
-				before it is removed, and each user is allowed
-				10 removed posts before they are banned. However,
-				if you think an issue has ocurred with the automatic
-				banning system, go <a class="content-link" href="http://staylooking.com/help/bannedaccount/">here</a>
-			</p>
+					//Check if user is already verified
+					$active = mysqli_fetch_array(mysqli_query($connect,"SELECT active FROM users WHERE user_name='$user';"))['active'];
+					if ($active < 1) {
 
-			<h2 class="content-heading">How do I delete my account?</h2>
+						$sqlGetUserInfo = "SELECT user_email, user_hash FROM users WHERE user_name='$user';";
+						$info = mysqli_fetch_array(mysqli_query($connect, $sqlGetUserInfo));
+						$email = $info['user_email'];
+						$hash = $info['user_hash'];
 
-			<p class="content-p">
-				If you wish to delete your account
-				for whatever reason at all, go <a class="content-link" href="http://staylooking.com/help/deleteaccount/">here</a>
-			</p>
+						//Send email verification
+						$to = $email;
+						$subject = "StayLooking | Email Verification";
+						$headers = 'From:noreply@staylooking.com' . "\r\n";
+						$message = "
+						Please verify your email in case you forget your password.
 
-			<h2 class="content-heading">How can I retrieve a forgotten username or password?</h2>
+						------------
+						Username: ".$user."
+						------------
 
-			<p class="content-p">
-				If you have forgotten your username or
-				password and need to retrieve either, go <a class="content-link" href="http://staylooking.com/help/forgotpassword/">here</a>
-			</p>
+						Please click this link to activate your account:
+						http://www.staylooking.com/verify.php?hash=".$hash."
 
-			<h2 class="content-heading">I lost the email verification link.</h2>
+						";
 
-			<p class="content-p">
-				Click <a class="content-link" href="http://staylooking.com/help/resendverify/">here</a> to resend the verification email.
-			</p>
+						mail($to, $subject, $message, $headers);
+
+						echo "<p class='content-p'> Another verification email has been sent to the email associated with this account. </p>";
+
+					}else {
+
+						echo "<p class='content-p'> Your account is already verified. </p>";
+
+					}
+
+				}else {
+
+					echo "<p class='content-p'> You must be logged in to verify your account. Log in <a href='http://staylooking.com/login/index.php'>here</a></p>";
+
+				}
+
+
+			?>
 
 		</main>
 
@@ -121,7 +133,7 @@
 				<div class="footer-left">
 					<a href="http://staylooking.com/contact/">CONTACT</a>
 					<a href="http://staylooking.com/about/">ABOUT</a>
-					<a href="http://staylooking.com/help/"><b>HELP</b></a>
+					<a href="http://staylooking.com/help/">HELP</a>
 					<a href="http://staylooking.com/blog/">BLOG</a>
 				</div>
 

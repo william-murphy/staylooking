@@ -41,7 +41,7 @@
 
 			//Check for empty fields
 			if (empty($user_email) || empty($user_name) || empty($user_pwd)) {
-				
+
 				header("Location: http://staylooking.com/signup/index.php?status=emptyfield");
 				exit();
 
@@ -84,11 +84,33 @@
 							//Hash the password
 							$hashedpwd = password_hash($user_pwd, PASSWORD_DEFAULT);
 
+							// Generate random 32 character hash and assign it to a local variable.
+							$verifyhash = md5(rand(0,1000));
+
 							//Insert the user info into the database
 							$sqlInsertUserInfo = "INSERT INTO users
-							(user_email, user_name, user_pwd, user_reports, user_banned)
-							VALUES ('$user_email', '$user_name', '$hashedpwd', 0, 0);";
+							(user_email, user_name, user_pwd, user_reports, user_banned, user_hash)
+							VALUES ('$user_email', '$user_name', '$hashedpwd', 0, 0, '$verifyhash');";
 							mysqli_query($connect, $sqlInsertUserInfo);
+
+							//Send email verification
+							$to = $user_email;
+							$subject = "StayLooking | Email Verification";
+							$headers = 'From:noreply@staylooking.com' . "\r\n";
+							$message = "
+							Thanks for signing up! Please verify your email in case you forget your password.
+
+							------------
+							Username: ".$user_name."
+							Password: ".$user_pwd."
+							------------
+
+							Please click this link to activate your account:
+							http://staylooking.com/verify.php?hash=".$verifyhash."
+
+							";
+
+							mail($to, $subject, $message, $headers);
 
 							//Bring user to login page
 							header("Location: http://staylooking.com/login/index.php?status=signupsuccess");

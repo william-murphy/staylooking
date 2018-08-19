@@ -7,13 +7,13 @@
 		<meta charset="utf-8"/>
 		<meta property="og.type" content="website"/>
 		<meta property="og.site_name" content="StayLooking"/>
-		<meta property="og.title" content="Help | StayLooking"/>
+		<meta property="og.title" content="Verify Account | StayLooking"/>
 		<meta property="og.url" content="http://www.staylooking.com"/>
 
 		<link rel="stylesheet" href="style.css" type="text/css">
 		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 
-		<title>Help | StayLooking</title>
+		<title>Verify Account | StayLooking</title>
 
 	</head>
 
@@ -71,46 +71,48 @@
 
 		<main>
 
-			<h1 class="content-main-heading">Help</h1>
+			<?php
 
-			<h2 class="content-heading">Why does something not work?</h2>
+				if ($loggedin == TRUE) {
 
-			<p class="content-p">
-				Because I need to fix it, please email me
-				with the subject 'Found Bug' and a description of the issue
-				to the email on the <a class="content-link" href="http://staylooking.com/contact/">contact</a>
-				page.
-			</p>
+					$user = $_SESSION['user_name_s'];
 
-			<h2 class="content-heading">Why am I banned?</h2>
+					if (isset($_GET['hash']) && !empty($_GET['hash'])) {
 
-			<p class="content-p">
-				Each post is allowed 10 reports
-				before it is removed, and each user is allowed
-				10 removed posts before they are banned. However,
-				if you think an issue has ocurred with the automatic
-				banning system, go <a class="content-link" href="http://staylooking.com/help/bannedaccount/">here</a>
-			</p>
+						//Include the database connection file
+						include_once "ROOT_DB_CONNECT.php";
 
-			<h2 class="content-heading">How do I delete my account?</h2>
+						$hash = mysqli_real_escape_string($connect, $_GET['hash']); // Set hash variable
 
-			<p class="content-p">
-				If you wish to delete your account
-				for whatever reason at all, go <a class="content-link" href="http://staylooking.com/help/deleteaccount/">here</a>
-			</p>
+						$sqlFindHash = "SELECT active FROM users WHERE user_name='$user' AND user_hash='$hash' AND active='0';";
+						$result = mysqli_query($connect, $sqlFindHash);
 
-			<h2 class="content-heading">How can I retrieve a forgotten username or password?</h2>
+						if (mysqli_num_rows($result) > 0) {
 
-			<p class="content-p">
-				If you have forgotten your username or
-				password and need to retrieve either, go <a class="content-link" href="http://staylooking.com/help/forgotpassword/">here</a>
-			</p>
+							mysqli_query($connect, "UPDATE users SET active='1' WHERE user_hash='$hash' AND user_name='$user';");
+							echo "<p> Your account has been verified! You can now upload pictures </p>";
 
-			<h2 class="content-heading">I lost the email verification link.</h2>
+						}else {
 
-			<p class="content-p">
-				Click <a class="content-link" href="http://staylooking.com/help/resendverify/">here</a> to resend the verification email.
-			</p>
+							echo "<p> Error: Already verified or user and hash don't match </p>";
+
+						}
+
+
+					}else {
+
+						echo "<p> Error: Invalid URL </p>";
+
+					}
+
+				}else {
+
+					header("Location: http://staylooking.com/login/index.php");
+					exit();
+
+				}
+
+			?>
 
 		</main>
 
@@ -121,7 +123,7 @@
 				<div class="footer-left">
 					<a href="http://staylooking.com/contact/">CONTACT</a>
 					<a href="http://staylooking.com/about/">ABOUT</a>
-					<a href="http://staylooking.com/help/"><b>HELP</b></a>
+					<a href="http://staylooking.com/help/">HELP</a>
 					<a href="http://staylooking.com/blog/">BLOG</a>
 				</div>
 

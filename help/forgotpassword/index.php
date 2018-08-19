@@ -73,10 +73,6 @@
 
 			<h1>Forgotten Password</h1>
 
-			<p> This page is not available yet. </p>
-
-			<!--
-
 			<form class="content-form" method="POST">
 				<input class="content-input" name="email" type="text" placeholder="This Account's Email..."></input>
 				<input class="content-input" name="pwd" type="password" placeholder="New password..."></input>
@@ -85,7 +81,7 @@
 			</form>
 
 			<?php
-				/*
+
 				include_once "../../ROOT_DB_CONNECT.php";
 				session_start();
 
@@ -140,9 +136,9 @@
 					}
 
 				}
-				*/
+
 			?>
-		-->
+	
 		</main>
 
 		<footer>
