@@ -99,11 +99,11 @@
 				for whatever reason at all, go <a class="content-link" href="http://staylooking.com/help/deleteaccount/">here</a>
 			</p>
 
-			<h2 class="content-heading">How can I retrieve a forgotten username or password?</h2>
+			<h2 class="content-heading">How can I retrieve a forgotten password?</h2>
 
 			<p class="content-p">
-				If you have forgotten your username or
-				password and need to retrieve either, go <a class="content-link" href="http://staylooking.com/help/forgotpassword/">here</a>
+				If you have forgotten your password
+				and need to retrieve either, go <a class="content-link" href="http://staylooking.com/help/forgotpassword/">here</a>
 			</p>
 
 			<h2 class="content-heading">I lost the email verification link.</h2>

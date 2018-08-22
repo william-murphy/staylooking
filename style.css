@@ -224,3 +224,35 @@ a:hover {
 button:hover {
 	background-color: #cccccc;
 }
+
+.signup-form {
+	text-align: center;
+	margin: auto;
+}
+
+.signup-form input {
+	margin: 10%;
+	padding: 10px 20px;
+	font-size: 1.1em;
+	background-color: #a9a9a9;
+	border: 1px solid black;
+}
+
+.signup-form input:hover {
+	background-color: #cccccc;
+}
+.signup-form input::placeholder {
+	color: black;
+}
+
+.signup-form button {
+	margin-top: 4em;
+	padding: 8px 20px;
+	font-size: 1.1em;
+	border: 1px solid black;
+	background-color: #a9a9a9;
+}
+
+.signup-form button:hover {
+	background-color: #cccccc;
+}

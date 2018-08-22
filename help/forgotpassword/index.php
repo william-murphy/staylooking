@@ -73,72 +73,52 @@
 
 			<h1>Forgotten Password</h1>
 
-			<form class="content-form" method="POST">
-				<input class="content-input" name="email" type="text" placeholder="This Account's Email..."></input>
-				<input class="content-input" name="pwd" type="password" placeholder="New password..."></input>
-				<input class="content-input" name="confirm" type="password" placeholder="Confirm password..."></input>
-				<input class="content-button" name="submit" type="submit" value="Change Password"></input>
-			</form>
-
 			<?php
 
-				include_once "../../ROOT_DB_CONNECT.php";
-				session_start();
+				if ($loggedin == TRUE) {
 
-				if (isset($_POST['submit'])) {
+					include_once "../../ROOT_DB_CONNECT.php";
+					$user = $_SESSION['user_name_s'];
 
-					if ($loggedin == true) {
+					//Check if user is already verified
+					$active = mysqli_fetch_array(mysqli_query($connect,"SELECT active FROM users WHERE user_name='$user';"))['active'];
+					if ($active > 0) {
 
-						$email = mysqli_real_escape_string($connect, $_POST['email']);
-						$name = $_SESSION['user_name_s'];
-						$pwd = mysqli_real_escape_string($connect, $_POST['pwd']);
-						$confirm = mysqli_real_escape_string($connect, $_POST['confirm']);
-						$sqlGetEmail = "SELECT * FROM users WHERE user_email='$email' AND user_name='$name';";
-						$result = mysqli_query($connect, $sqlGetEmail);
+						$sqlGetUserInfo = "SELECT user_email, user_hash FROM users WHERE user_name='$user';";
+						$info = mysqli_fetch_array(mysqli_query($connect, $sqlGetUserInfo));
+						$email = $info['user_email'];
+						$hash = $info['user_hash'];
 
-						if (mysqli_num_rows($result) > 0) {
+						//Send email verification
+						$to = $email;
+						$subject = "StayLooking | Forgot Password";
+						$headers = 'From:noreply@staylooking.com' . "\r\n";
+						$message = "
+						Click the link below to change your password.
 
-							if ($pwd == $confirm || preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $pwd)) {
+						http://staylooking.com/changepassword.php?hash=".$hash."
 
-								$hash = password_hash($pwd, PASSWORD_DEFAULT);
-								$sqlUpdatePwd = "UPDATE users SET user_pwd='$hash' WHERE user_name='$name';";
-								if (!mysqli_query($connect, $sqlUpdatePwd)) {
+						";
 
-									echo "<p class='content-p'>Unknown error changing password.</p>";
-									exit();
+						mail($to, $subject, $message, $headers);
 
-								}else {
-
-									echo "<p class='content-p'>Successfully changed password.</p>";
-									exit();
-
-								}
-
-							}else {
-
-								echo "<p class='content-p'>The passwords you entered don't match, or don't meet the password requirements.</p>";
-								exit();
-
-							}
-
-						}else {
-
-							echo "<p class='content-p'>Email given doesn't match the email associated with your account.</p>";
-							exit();
-
-						}
+						echo "<p class='content-p'> A link to change your password has been sent to the email associated with this account. </p>";
 
 					}else {
 
-						echo "<p class='content-p'>You must be signed in to change your password.</p>";
-						exit();
+						echo "<p class='content-p'> Your account must be verified to change your password. Click <a class='content-link' href='http://staylooking.com/help/resendverify/index.php'>here</a> to resend the verification email. </p>";
 
 					}
+
+				}else {
+
+					echo "<p class='content-p'> You must be logged in to verify your account. Log in <a class='content-link' href='http://staylooking.com/login/index.php'>here</a></p>";
 
 				}
 
 			?>
-	
+
+
 		</main>
 
 		<footer>

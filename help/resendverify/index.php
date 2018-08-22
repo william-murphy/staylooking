@@ -117,7 +117,7 @@
 
 				}else {
 
-					echo "<p class='content-p'> You must be logged in to verify your account. Log in <a href='http://staylooking.com/login/index.php'>here</a></p>";
+					echo "<p class='content-p'> You must be logged in to verify your account. Log in <a class='content-link' href='http://staylooking.com/login/index.php'>here</a></p>";
 
 				}
 
