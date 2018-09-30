@@ -87,38 +87,33 @@
 
 					if ($loggedin == TRUE) {
 
-					$user = $_SESSION['user_name_s'];
+						$user = $_SESSION['user_name_s'];
 
-					if (isset($_GET['hash']) && !empty($_GET['hash'])) {
+						if (isset($_GET['hash']) && !empty($_GET['hash'])) {
 
-						//Include the database connection file
-						include_once "ROOT_DB_CONNECT.php";
+							//Include the database connection file
+							include_once "ROOT_DB_CONNECT.php";
 
-						$hash = mysqli_real_escape_string($connect, $_GET['hash']); // Set hash variable
+							$hash = mysqli_real_escape_string($connect, $_GET['hash']); // Set hash variable
 
-						$sqlFindHash = "SELECT active FROM users WHERE user_name='$user' AND user_hash='$hash' AND active='1';";
-						$result = mysqli_query($connect, $sqlFindHash);
+							$sqlFindHash = "SELECT active FROM users WHERE user_name='$user' AND user_hash='$hash' AND active='1';";
+							$result = mysqli_query($connect, $sqlFindHash);
 
-						if (mysqli_num_rows($result) > 0) {
+							if (mysqli_num_rows($result) > 0) {
 
-								if (($pwd == $confirm) && (preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $pwd) === 1)) {
+								if (($pwd != $confirm) || (!preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $pwd))) {
+
+									echo "<p class='content-p'>The passwords you entered don't match, or don't meet the password requirements.</p>";
+
+								}else {
 
 									$hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
 									$sqlUpdatePwd = "UPDATE users SET user_pwd='$hashedpwd' WHERE user_name='$user';";
 
-									if (!mysqli_query($connect, $sqlUpdatePwd)) {
+									mysqli_query($connect, $sqlUpdatePwd) or die("Unknown error changing password.");
 
-										echo "<p class='content-p'>Unknown error changing password.</p>";
+									echo "<p class='content-p'>Successfully changed password.</p>";
 
-									}else {
-
-										echo "<p class='content-p'>Successfully changed password.</p>";
-
-									}
-
-								}else {
-
-									echo "<p class='content-p'>The passwords you entered don't match, or don't meet the password requirements.</p>";
 								}
 
 							}else {
