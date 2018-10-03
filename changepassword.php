@@ -80,19 +80,19 @@
 
 			<?php
 
-				$pwd = mysqli_real_escape_string($connect, $_POST['pwd']);
-				$confirm = mysqli_real_escape_string($connect, $_POST['confirm']);
-
 				if (isset($_POST['submit']) && isset($_POST['pwd']) && isset($_POST['confirm']) && !empty($_POST['pwd']) && !empty($_POST['confirm'])) {
+
+					//Include the database connection file
+					include_once "ROOT_DB_CONNECT.php";
+
+					$pwd = mysqli_real_escape_string($connect, $_POST['pwd']);
+					$confirm = mysqli_real_escape_string($connect, $_POST['confirm']);
 
 					if ($loggedin == TRUE) {
 
 						$user = $_SESSION['user_name_s'];
 
 						if (isset($_GET['hash']) && !empty($_GET['hash'])) {
-
-							//Include the database connection file
-							include_once "ROOT_DB_CONNECT.php";
 
 							$hash = mysqli_real_escape_string($connect, $_GET['hash']); // Set hash variable
 
@@ -101,18 +101,26 @@
 
 							if (mysqli_num_rows($result) > 0) {
 
-								if (($pwd != $confirm) || (!preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $pwd))) {
+								if ($pwd != $confirm) {
 
-									echo "<p class='content-p'>The passwords you entered don't match, or don't meet the password requirements.</p>";
+									echo "<p class='content-p'>The passwords you entered don't match.</p>";
 
 								}else {
 
-									$hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
-									$sqlUpdatePwd = "UPDATE users SET user_pwd='$hashedpwd' WHERE user_name='$user';";
+									if (!preg_match("/^[a-zA-Z0-9!@#$%]{5,64}/", $pwd)) {
 
-									mysqli_query($connect, $sqlUpdatePwd) or die("Unknown error changing password.");
+										echo "<p class='content-p'>The passwords you entered don't meet the password requirements.</p>";
 
-									echo "<p class='content-p'>Successfully changed password.</p>";
+									}else {
+
+										$hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
+										$sqlUpdatePwd = "UPDATE users SET user_pwd='$hashedpwd' WHERE user_name='$user';";
+
+										mysqli_query($connect, $sqlUpdatePwd) or die("Unknown error changing password.");
+
+										echo "<p class='content-p'>Successfully changed password.</p>";
+
+									}
 
 								}
 
