@@ -75,10 +75,29 @@
 
 			<?php
 
-				if ($loggedin == TRUE) {
+				if ($loggedin == FALSE) {
 
-					include_once "../../ROOT_DB_CONNECT.php";
-					$user = $_SESSION['user_name_s'];
+					echo "
+
+						<form class='content-form' action='' method='POST'>
+							<input type='text' name='user' placeholder='Enter Username...'></input>
+							<br>
+							<button type='submit' name='submit'>Send Email</button>
+						</form>
+
+					";
+
+				}
+
+			?>
+
+			<?php
+
+				include_once "../../ROOT_DB_CONNECT.php";
+
+				if (isset($_POST['user']) && !empty($_POST['user'])) {
+
+					$user = mysqli_real_escape_string($connect, $_POST['user']);
 
 					//Check if user is already verified
 					$active = mysqli_fetch_array(mysqli_query($connect,"SELECT active FROM users WHERE user_name='$user';"))['active'];
@@ -98,6 +117,8 @@
 
 						http://staylooking.com/changepassword.php?hash=".$hash."
 
+						If you did not request a password change, please ignore this email.
+
 						";
 
 						mail($to, $subject, $message, $headers);
@@ -109,10 +130,6 @@
 						echo "<p class='content-p'> Your account must be verified to change your password. Click <a class='content-link' href='http://staylooking.com/help/resendverify/index.php'>here</a> to resend the verification email. </p>";
 
 					}
-
-				}else {
-
-					echo "<p class='content-p'> You must be logged in to verify your account. Log in <a class='content-link' href='http://staylooking.com/login/index.php'>here</a></p>";
 
 				}
 

@@ -79,8 +79,13 @@
 				<input type="password" id="user_pwd" placeholder="Password..."></input>
 				<br>
 				<button id="submit">Log In</button>
+				<button id="forgotpassword">Forgot Password</button>
 
 				<script type="text/javascript">
+
+					$("#forgotpassword").click(function(){
+						window.location.href="http://staylooking.com/help/forgotpassword/";
+					});
 
 					$("#submit").click(function () {
 
@@ -160,7 +165,7 @@
 		</main>
 
 		<footer>
-			
+
 			<div class="footer-wrapper">
 
 				<div class="footer-left">
